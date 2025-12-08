@@ -129,6 +129,7 @@ public class Main {
                         System.out.println("vælg den genstand du gerne vil sælge");
                         int removedItem = input.nextInt();
                         input.nextLine();
+
                         //double earning = newItem.getValue();
                         //System.out.println(torben.getCredits() + earning);
                         torben.removeItem(removedItem - 1);
