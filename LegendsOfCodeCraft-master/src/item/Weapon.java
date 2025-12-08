@@ -20,4 +20,6 @@ public class Weapon extends Item{
         return "Weapon: " + getName() + " Damage: " + currentDamage + " Handtype: " + handType;
     }
 
+
+
 }

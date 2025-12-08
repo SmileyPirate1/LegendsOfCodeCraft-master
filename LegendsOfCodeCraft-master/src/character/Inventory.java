@@ -27,10 +27,14 @@ public class Inventory {
     }
 
     //Vi tjekker om det item vi vil adde IKKE er instanceof Consumable som er klassen. Hvis ikke tilføjer vi.
-    public void addItem(Item item) {
+    public boolean addItem(Item item) {
         if (!(item instanceof Consumable)) {
+            if (currentWeight + item.getWeight() > maxWeight) {
+                return false;
+            }
             items.add(item);
-            return;
+            currentWeight += item.getWeight();
+            return true;
         }
 
         //incoming er et object af Consumable som indeholder det item vi der er på vej til at blive tjekket
@@ -42,9 +46,9 @@ public class Inventory {
         for (Item i : items) {
             if (toPlace == 0) break;
 
-            //Vi opretter et object af Consumable med værdien af det sted vi er nået i listen //objektet vi tjekker mod ekstiere allerede i listen
+            //Vi opretter et object af Consumable med værdien af det sted vi er nået i listen
+            //Objektet vi tjekker mod ekstiere allerede i listen
             //Hvis existing "canStackWith" det item som er incoming
-            //
             if (i instanceof Consumable) {
                 Consumable existing = (Consumable) i;
                 if (existing.canStackWith(incoming)) {
@@ -74,15 +78,32 @@ public class Inventory {
             items.add(newStack);
             toPlace -= chunk;
         }
+        currentWeight += item.getWeight();
+        return true;
     }
-
-    public void removeItem(Item item) {
-            items.remove(item);
-            return;
-    }
-
 
     public List<Item> getItems() {
         return items;
+    }
+
+    public double getCurrentWeight() {
+        return currentWeight;
+    }
+    public double getMaxWeight() {
+        return maxWeight;
+    }
+    public double getSlots(){
+        return slots;
+    }
+    public void setCurrentWeight(double weight){
+        this.currentWeight = weight;
+    }
+
+    public double getCredits() {
+        return credits;
+    }
+
+    public void setCredits(double credits) {
+        this.credits = credits;
     }
 }

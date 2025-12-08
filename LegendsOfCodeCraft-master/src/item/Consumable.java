@@ -39,12 +39,13 @@ public class Consumable extends Item{
         if (stackSize + amount > maxStackSize){
             canAdd = maxStackSize - stackSize;
         }
-        stackSize += amount;
+        stackSize += canAdd;
         return canAdd;
     }
     //Vi tjerkker om item er stackable
     public boolean canStackWith(Consumable other){
-        return other != null && this.getItemId() == other.getItemId();
+        if (other == null) return false;
+        return this.getName().equalsIgnoreCase(other.getName())
+                && this.maxStackSize == other.getMaxStackSize();
     }
-
 }
