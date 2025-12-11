@@ -1,8 +1,5 @@
 package character;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 import item.Armour;
 import item.Consumable;
 import item.Item;
@@ -23,7 +20,7 @@ public class Character {
         this.characterId = characterId;
 
         //Her opretter vi også et inventory
-        this.inventory = new Inventory(32, 50, 0, 0, 1, inventoryId);
+        this.inventory = new Inventory(0, 32, 0, 1, inventoryId,1);
     }
 
     public String getName() {
@@ -39,12 +36,7 @@ public class Character {
     }
 
     public String showInventory() {
-        StringBuilder output = new StringBuilder();
-        output.append("Inventar: \n");
-        for (int i = 0; i < inventory.getItems().size(); i++) {
-            output.append("Slot: ").append(+i + 1).append(" ").append(inventory.getItems().get(i)).append("\n");
-        }
-        return output.toString();
+        return inventory.showInventory();
     }
 
 
@@ -83,21 +75,53 @@ public class Character {
         return false;
     }
 
-    //Metode til at fjerne items
+    //Metode til at fjerne items, kalder inventory for at have alle 3 lag med. main - character - inventory og tilbage samme vej.
     public void removeItem(int slot) {
-        Item i = inventory.getItems().get(slot);
-        inventory.getItems().remove(slot);
-        double v = inventory.getCurrentWeight() - i.getWeight();
-        inventory.setCurrentWeight(v);
+        inventory.removeItem(slot);
+    }
+
+    public void sellItem(int slot) {
+        inventory.sellItem(slot);
+    }
+
+    public void sortByWeight(){
+        inventory.bubbleSortByWeight();
+    }
+
+    public void sortByName(){
+        inventory.bubbleSortByName();
+    }
+
+    public void upgradeSlot() {
+        int upgrade = 1 + inventory.getCurrentSlots();
+        inventory.setSlots(upgrade);
+    }
+
+    public int getSlots() {
+        return inventory.getCurrentSlots();
     }
 
     public double getCredits() {
         return inventory.getCredits();
     }
 
-    public void sellItem(double credits) {
-        double i = inventory.getCredits();
-        double v = inventory.getCurrentWeight() + i;
-        inventory.setCurrentWeight(v);
+    public double getMaxSlots(){
+        return inventory.getMaxSlots();
+    }
+    public String useItemAt(int index){
+        if (index >= inventory.getItems().size()){
+            throw new IndexOutOfBoundsException("Ugyldigt plads" + index);
+        }
+        Item item = inventory.getItems().get(index);
+
+        String result = item.useItem();
+
+        if (item instanceof Consumable){
+            Consumable c = (Consumable) item;
+            if (c.isEmpty()){
+                inventory.removeItem(index);
+            }
+        }
+        return result;
     }
 }

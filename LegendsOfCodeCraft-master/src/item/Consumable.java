@@ -1,13 +1,16 @@
 package item;
 
+import Enums.ItemType;
+
 public class Consumable extends Item{
+    private static final ItemType itemType = ItemType.consumable;
     private int stackSize;
     private int maxStackSize;
     private String effect;
 
     //Konstruktør
     public Consumable(String name, double weight, double value, int durability, int itemId, int stackSize, int maxStackSize, String effect) {
-        super(name, weight, value, durability, itemId);
+        super(name, weight, value, durability, itemId, itemType);
         this.stackSize = stackSize;
         this.effect = effect;
         this.maxStackSize = maxStackSize;
@@ -42,10 +45,26 @@ public class Consumable extends Item{
         stackSize += canAdd;
         return canAdd;
     }
-    //Vi tjerkker om item er stackable
+    //Vi tjekker om item er stackable
     public boolean canStackWith(Consumable other){
         if (other == null) return false;
         return this.getName().equalsIgnoreCase(other.getName())
                 && this.maxStackSize == other.getMaxStackSize();
+    }
+    public String consumeOne(){
+        if (stackSize <= 0){
+            return "Ingen tilbage af " + getName() + ".";
+        }
+        stackSize--;
+        return effect;
+    }
+
+    @Override
+    public String useItem(){
+        return consumeOne();
+    }
+
+    public boolean isEmpty(){
+        return stackSize <= 0;
     }
 }

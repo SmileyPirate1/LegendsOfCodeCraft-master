@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Inventory {
-    private int slots;
+    private int currentSlots = 32;
+    private int usedSlots = 0;
     private final int maxSlots = 192;
-    private double maxWeight;
+    private final double maxWeight = 50;
     private double currentWeight;
     private double credits;
     private int inventoryId;
@@ -17,9 +18,9 @@ public class Inventory {
     private final ArrayList<Item> items = new ArrayList<>();
 
     //Konstruktør
-    public Inventory(int slots, double maxWeight, double currentWeight, double credits, int inventoryId, int itemId) {
-        this.slots = slots;
-        this.maxWeight = maxWeight;
+    public Inventory(int usedSlots, int currentSlots, double currentWeight, double credits, int inventoryId, int itemId) {
+        this.currentSlots = currentSlots;
+        this.usedSlots = usedSlots;
         this.currentWeight = currentWeight;
         this.credits = credits;
         this.inventoryId = inventoryId;
@@ -33,6 +34,7 @@ public class Inventory {
                 return false;
             }
             items.add(item);
+            usedSlots++;
             currentWeight += item.getWeight();
             return true;
         }
@@ -74,12 +76,80 @@ public class Inventory {
                     incoming.getMaxStackSize(),
                     incoming.getEffect()
             );
-
             items.add(newStack);
+            usedSlots++;
             toPlace -= chunk;
         }
         currentWeight += item.getWeight();
         return true;
+    }
+
+    public void swap(List<Item> list, int i, int j){
+        Item tmp = list.get(i);
+        list.set(i, list.get(j));
+        list.set(j, tmp);
+
+    }
+
+    public void bubbleSortByName(){
+        boolean swapped;
+        for (int i = 0; i < items.size(); i++){
+            swapped = false;
+            for (int j = 0; j < items.size() - 1 - i; j++){
+                String a = items.get(j).getName();
+                String b = items.get(j+1).getName();
+
+                int cmp = 0;
+                if (a == null && b != null) cmp = 1;
+                else if (a != null && b == null) cmp = -1;
+                else if (a != null && b != null) cmp = a.compareToIgnoreCase(b);
+
+                if (cmp > 0){
+                    swap(items, j, j+1);
+                    swapped = true;
+                }
+            }
+            if (!swapped) break;
+        }
+    }
+    public void bubbleSortByWeight(){
+        boolean swapped;
+        for (int i = 0; i < items.size(); i++){
+            swapped = false;
+            for (int j = 0; j < items.size() - 1 - i; j++){
+                if (items.get(j).getWeight() > items.get(j+1).getWeight()) {
+                    swap(items, j, j+1);
+                    swapped = true;
+                }
+            }
+            if (!swapped) break;
+        }
+    }
+
+    public void removeItem(int slot) {
+        Item i = getItems().get(slot);
+        getItems().remove(slot);
+        double v = getCurrentWeight() - i.getWeight();
+        setCurrentWeight(v);
+        usedSlots--;
+    }
+    
+    public String showInventory() {
+        StringBuilder output = new StringBuilder();
+        output.append("Inventar: \n");
+        for (int i = 0; i < getItems().size(); i++) {
+            output.append("Slot: ").append(+i + 1).append(" ").append(getItems().get(i)).append("\n");
+        }
+        output.append("Inventar vægt: ").append(" ").append(String.format("%.2f", getCurrentWeight())).append("\n");
+        output.append("Slots brugte: ").append(" ").append(getUsedSlots()).append(" / " ).append(getCurrentSlots()).append("\n");
+        output.append("Kredit: ").append(" ").append(getCredits()).append("\n");
+        return output.toString();
+    }
+
+    public void sellItem(int slot) {
+        Item i = getItems().get(slot);
+        double newValue = i.getValue() + getCredits();
+        setCredits(newValue);
     }
 
     public List<Item> getItems() {
@@ -89,12 +159,19 @@ public class Inventory {
     public double getCurrentWeight() {
         return currentWeight;
     }
+
     public double getMaxWeight() {
         return maxWeight;
     }
-    public double getSlots(){
-        return slots;
+
+    public int getMaxSlots() {
+        return maxSlots;
     }
+
+    public int getCurrentSlots(){
+        return currentSlots;
+    }
+
     public void setCurrentWeight(double weight){
         this.currentWeight = weight;
     }
@@ -105,5 +182,17 @@ public class Inventory {
 
     public void setCredits(double credits) {
         this.credits = credits;
+    }
+
+    public void setSlots(int currentSlots) {
+        this.currentSlots = currentSlots;
+    }
+
+    public int getUsedSlots(){
+        return usedSlots;
+    }
+
+    public void setUsedSlots(int usedSlots){
+        this.usedSlots = usedSlots;
     }
 }
