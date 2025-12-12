@@ -1,6 +1,9 @@
+import Exceptions.InventoryFullException;
+import Exceptions.OverweightException;
 import item.*;
 import character.Character;
 
+import java.sql.SQLOutput;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -13,7 +16,6 @@ public class Main {
 
         System.out.println("Velkommen til Legends of CodeCraft, vælg din næste aktion");
 
-
         boolean run = true;
         try {
             while (run) {
@@ -22,7 +24,7 @@ public class Main {
                 try {
                     action = input.nextLine();
                 } catch (NoSuchElementException | IllegalStateException e) {
-                    System.out.println("Fejl ved input, programmet afsluttes");
+                    System.out.println("Fejl ved input");
                     break;
                 }
                 switch (action) {
@@ -33,7 +35,7 @@ public class Main {
                         try {
                             itemType = input.nextLine();
                         } catch (Exception e) {
-                            System.out.println("Fejl ved input, programmet afsluttes");
+                            System.out.println("Fejl ved input");
                             break;
                         }
 
@@ -53,17 +55,15 @@ public class Main {
                                 System.out.println("Ingen genstand er indlæst");
                             }
 
-                            boolean add = torben.addItem(newItem);
-                            if (add) {
+                            torben.addItem(newItem);
                                 System.out.println("Tilføjet: " + newItem);
-                                System.out.println("Nuværende vægt" + torben.getCurrentWeight());
-                            } else {
-                                System.out.println("Genstand er for tungt!");
-                            }
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("Ugyldigt valg");
+
+                                //Vi griber overweight exception fra inventory som er boblet igennem programmet.
+                        } catch (InventoryFullException | OverweightException e) {
+                            System.out.println(e.getMessage());
                         } catch (Exception e) {
-                            System.out.println("Kritisk fejl programmet afsluttes");
+                            System.out.println("Der er sket en kritisk fejl");
+                            run = false;
                         }
                         break;
 
@@ -85,7 +85,7 @@ public class Main {
                             } catch (IndexOutOfBoundsException e) {
                                 System.out.println("Pladsen eksistere ikke i inventaret");
                             } catch (Exception e) {
-                                System.out.println("Der er sket en kritisk fejl, programmet afsluttes");
+                                System.out.println("Der er sket en kritisk fejl");
                             }
                         }
                         break;
@@ -109,7 +109,7 @@ public class Main {
                                 System.out.println(result);
                                 input.nextLine();
                             } catch (Exception e) {
-                                System.out.println("Der er sket en kritisk fejl, programmet stopper");
+                                System.out.println("Der er sket en kritisk fejl");
                             }
                         }
                         break;
@@ -133,7 +133,7 @@ public class Main {
                                 System.out.println("du valgte ikke en af mulighederne");
                             }
                         } catch (Exception e) {
-                            System.out.println("Der skete en kritisk fejl, programmet stopper");
+                            System.out.println("Der er sket en kritisk fejlD");
                             break;
                         }
                         break;
@@ -143,7 +143,7 @@ public class Main {
                         try {
                             System.out.println(torben.showInventory());
                         } catch (Exception e) {
-                            System.out.println("Der skete en kritisk fejl, programmet stopper");
+                            System.out.println("Der er sket en kritisk fejl");
                         }
                         break;
 
@@ -166,7 +166,7 @@ public class Main {
                             } catch (IndexOutOfBoundsException e) {
                                 System.out.println("Pladsen eksistere ikke");
                             } catch (Exception e) {
-                                System.out.println("Der skete en kritisk fejl, programmet stopper");
+                                System.out.println("Der er sket en kritisk fejl");
                             }
                         }
                         break;
@@ -195,22 +195,27 @@ public class Main {
                                 }
                             }
                         } catch (Exception e) {
-                            System.out.println("Der skete en kritisk fejl, programmet stopper");
+                            System.out.println("Der er sket en kritisk fejl");
                         }
                         break;
 
                     case "8":
+                        System.out.println("Din data bliver gemt");
+
+                    case "9":
+                        System.out.println("Din sidste gemte data bliver loaded in");
+
+                    case "10":
                         run = false;
                         break;
 
                     default:
                         System.out.println("Ugyldigt valg prøv igen");
                         break;
-
                 }
             }
         } catch (Exception e) {
-            System.out.println("Kritisk fejl er opstået, programmet afsluttes");
+            System.out.println("Der er sket en kritisk fejl");
         } finally {
             try {
                 input.close();
@@ -227,6 +232,8 @@ public class Main {
         System.out.println("5: Vis inventar");
         System.out.println("6: Sælg genstande");
         System.out.println("7: Upgrader inventar");
-        System.out.println("8: Afslut programmet");
+        System.out.println("8: Gem data");
+        System.out.println("9: Indlæs data");
+        System.out.println("10: Afslut programmet");
     }
 }

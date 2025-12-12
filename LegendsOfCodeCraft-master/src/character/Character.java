@@ -1,5 +1,6 @@
 package character;
 
+import Exceptions.OverweightException;
 import item.Armour;
 import item.Consumable;
 import item.Item;
@@ -20,15 +21,16 @@ public class Character {
         this.characterId = characterId;
 
         //Her opretter vi også et inventory
-        this.inventory = new Inventory(0, 32, 0, 1, inventoryId,1);
+        this.inventory = new Inventory(0, 32, 0, 1, inventoryId, 1);
     }
 
     public String getName() {
         return name;
     }
 
-    public boolean addItem(Item item) {
-        return inventory.addItem(item);
+    //Vi kaster den checked exception videre fra inventory til main
+    public void addItem(Item item) throws OverweightException {
+        inventory.addItem(item);
     }
 
     public java.util.List<Item> getInventory() {
@@ -48,33 +50,6 @@ public class Character {
         return inventory.getMaxWeight();
     }
 
-    public boolean useWeapon() {
-        for (Item i : inventory.getItems()) {
-            if (i instanceof Weapon) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean useArmour() {
-        for (Item i : inventory.getItems()) {
-            if (i instanceof Armour) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean useConsumable() {
-        for (Item i : inventory.getItems()) {
-            if (i instanceof Consumable) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     //Metode til at fjerne items, kalder inventory for at have alle 3 lag med. main - character - inventory og tilbage samme vej.
     public void removeItem(int slot) {
         inventory.removeItem(slot);
@@ -84,11 +59,11 @@ public class Character {
         inventory.sellItem(slot);
     }
 
-    public void sortByWeight(){
+    public void sortByWeight() {
         inventory.bubbleSortByWeight();
     }
 
-    public void sortByName(){
+    public void sortByName() {
         inventory.bubbleSortByName();
     }
 
@@ -105,23 +80,12 @@ public class Character {
         return inventory.getCredits();
     }
 
-    public double getMaxSlots(){
+    public double getMaxSlots() {
         return inventory.getMaxSlots();
     }
-    public String useItemAt(int index){
-        if (index >= inventory.getItems().size()){
-            throw new IndexOutOfBoundsException("Ugyldigt plads" + index);
-        }
-        Item item = inventory.getItems().get(index);
 
-        String result = item.useItem();
-
-        if (item instanceof Consumable){
-            Consumable c = (Consumable) item;
-            if (c.isEmpty()){
-                inventory.removeItem(index);
-            }
-        }
-        return result;
+    public String useItemAt(int index) {
+        return inventory.useItemAt(index);
     }
 }
+

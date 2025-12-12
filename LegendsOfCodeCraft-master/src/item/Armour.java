@@ -17,7 +17,7 @@ public class Armour extends Item{
     @Override
     public String toString() {
         //her fremviser vi navnet på rustningen, hvor meget den beskytter og hvor den sidder
-        return "Armour: " + getName() + " Protection: " + currentProtection + " SlotType: " + slotType;
+        return "Armour: " + getName() + " Protection: " + currentProtection + " Vægt: " + getWeight() + " SlotType: " + slotType;
     }
 
     @Override

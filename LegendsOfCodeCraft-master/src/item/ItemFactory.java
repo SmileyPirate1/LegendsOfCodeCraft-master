@@ -50,5 +50,16 @@ public class ItemFactory {
         }
         return newItem;
     }
+    //public Item parseItemLine(String line){
+        //if (line == null || line.isBlank()) return null;
+        //String[] parts = splitCSV(line);
+        //if (parts.length == 0) return null;
+
+        //String kind = parts[0];
+        //if ("CONSUMABLE".equalsIgnoreCase(kind)) {
+        //    String name = unescape(parts[1]);
+
+       // }
+   // }
 }
 

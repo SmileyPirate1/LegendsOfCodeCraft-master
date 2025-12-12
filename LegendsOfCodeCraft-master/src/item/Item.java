@@ -20,7 +20,25 @@ public abstract class Item {
         this.itemType = itemType;
     }
 
-
+    public String serialize (){
+        String type = this.getClass().getSimpleName();
+        return String.join(",",
+                "ITEM",
+                type,
+                escape(name),
+                String.valueOf(weight),
+                String.valueOf(value),
+                String.valueOf(durability),
+                String.valueOf(itemId));
+    }
+    protected static String escape(String s){
+        if (s == null) return "";
+        return s.replace("\\", "\\\\").replace(",", "\\,");
+    }
+    protected static String unescape(String s){
+        if (s == null) return "";
+        return s.replace("\\", "\\\\").replace(",", "\\,");
+    }
 
     //getter til ar vi kan kalde værdierne i itemet
     public String getName(){

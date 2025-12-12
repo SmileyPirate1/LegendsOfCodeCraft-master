@@ -5,8 +5,8 @@ import Enums.ItemType;
 public class Consumable extends Item{
     private static final ItemType itemType = ItemType.consumable;
     private int stackSize;
-    private int maxStackSize;
-    private String effect;
+    private final int maxStackSize;
+    private final String effect;
 
     //Konstruktør
     public Consumable(String name, double weight, double value, int durability, int itemId, int stackSize, int maxStackSize, String effect) {
@@ -16,26 +16,6 @@ public class Consumable extends Item{
         this.maxStackSize = maxStackSize;
     }
 
-    public String getEffect() {
-        return effect;
-    }
-
-    @Override
-    public String toString() {
-        return getName() + " " + getCurrentStackSize() + "/" + getMaxStackSize();
-    }
-
-    public int getCurrentStackSize() {
-        return stackSize;
-    }
-
-    public int getMaxStackSize() {
-        return maxStackSize;
-    }
-
-    public int spaceLeft(){
-        return maxStackSize - stackSize;
-    }
     //addToStack har et parameter amount som har værdien af toPlace fra inventory.
     public int addToStack(int amount){
         int canAdd = amount;
@@ -60,11 +40,47 @@ public class Consumable extends Item{
     }
 
     @Override
+    public String serialize(){
+        return String.join(",",
+                "CONSUMABLE",
+                escape(getName()),
+                String.valueOf(getWeight()),
+                String.valueOf(getValue()),
+                String.valueOf(getDurability()),
+                String.valueOf(getItemId()),
+                String.valueOf(getCurrentStackSize()),
+                String.valueOf(maxStackSize),
+                escape (effect));
+    }
+
+
+    @Override
     public String useItem(){
         return consumeOne();
     }
 
     public boolean isEmpty(){
         return stackSize <= 0;
+    }
+
+    @Override
+    public String toString() {
+        return getName() + " " + getCurrentStackSize() + "/" + getMaxStackSize() + " Vægt: " + getWeight() * getCurrentStackSize();
+    }
+
+    public int getCurrentStackSize() {
+        return stackSize;
+    }
+
+    public int getMaxStackSize() {
+        return maxStackSize;
+    }
+
+    public int spaceLeft(){
+        return maxStackSize - stackSize;
+    }
+
+    public String getEffect() {
+        return effect;
     }
 }
