@@ -25,4 +25,12 @@ public class Weapon extends Item{
     public String useItem(){
         return "Du slår med dit våben";
     }
+
+    public HandType getHandType(){
+        return handType;
+    }
+    public int getDamage(){
+        return damage;
+    }
 }
+

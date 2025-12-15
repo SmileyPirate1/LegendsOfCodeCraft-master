@@ -195,6 +195,23 @@ public class Inventory {
         return result;
     }
 
+    public void replaceAllItems(List<Item> newItems){
+        items.clear();
+        items.addAll(newItems);
+
+        double totalWeight = 0.0;
+        for (Item it : items){
+            if (it instanceof Consumable c ){
+                totalWeight += c.getWeight() * c.getCurrentStackSize();
+            } else {
+                totalWeight += it.getWeight();
+            }
+        }
+        currentWeight = totalWeight;
+        usedSlots = items.size();
+    }
+
+
     public List<Item> getItems() {
         return items;
     }

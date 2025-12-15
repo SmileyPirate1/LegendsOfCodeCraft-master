@@ -24,4 +24,10 @@ public class Armour extends Item{
     public String useItem(){
         return "Du tager dit udstyr på";
     }
+    public SlotType getSlotType(){
+        return slotType;
+    }
+    public int getCurrentProtection(){
+        return currentProtection;
+    }
 }

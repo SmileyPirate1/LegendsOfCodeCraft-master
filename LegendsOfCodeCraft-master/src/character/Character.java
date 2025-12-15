@@ -6,6 +6,9 @@ import item.Consumable;
 import item.Item;
 import item.Weapon;
 
+import java.io.IOException;
+import java.util.List;
+
 public class Character {
     private String name;
     private int level;
@@ -31,6 +34,13 @@ public class Character {
     //Vi kaster den checked exception videre fra inventory til main
     public void addItem(Item item) throws OverweightException {
         inventory.addItem(item);
+    }
+    public void saveItems(String path, item.ItemFactory factory) throws IOException {
+        factory.writeItemsToFile(path, inventory.getItems());
+    }
+    public void loadItems(String path, item.ItemFactory factory) throws IOException {
+        List<Item> loaded = factory.parseFileToItems(path);
+        inventory.replaceAllItems(loaded);
     }
 
     public java.util.List<Item> getInventory() {
