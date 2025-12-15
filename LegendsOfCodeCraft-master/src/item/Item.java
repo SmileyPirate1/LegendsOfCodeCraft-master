@@ -1,5 +1,4 @@
 package item;
-import Enums.HandType;
 import Enums.ItemType;
 
 //Item er abstract da vi ikke direkte opretter nogle instanser af item. Vi har istedet subklasser (consumable, weapon og armour)

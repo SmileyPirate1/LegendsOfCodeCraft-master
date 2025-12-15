@@ -1,10 +1,8 @@
 package character;
 
 import Exceptions.OverweightException;
-import item.Armour;
-import item.Consumable;
 import item.Item;
-import item.Weapon;
+
 
 import java.io.IOException;
 import java.util.List;

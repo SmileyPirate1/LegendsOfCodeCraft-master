@@ -57,6 +57,7 @@ public class ItemFactory {
     }
 
     //Gemmer en hel liste af items (en linje per item)
+    //listen af genstande bliver gemt til en text fil
     public void writeItemsToFile(String path, List<Item> items) throws IOException {
         try (BufferedWriter w = new BufferedWriter(new FileWriter(path))) {
             for (Item it : items) {
@@ -68,6 +69,7 @@ public class ItemFactory {
 
 
     public List<Item> parseFileToItems(String path) throws IOException {
+        //Her bliver data'en fra text filen uploaded til programmet
         List<Item> items = new ArrayList<>();
         try (BufferedReader r = new BufferedReader(new FileReader(path))) {
             String line;
@@ -81,15 +83,18 @@ public class ItemFactory {
     }
 
     public String serializeItem(Item item) {
+        //Her tjekkes om genstanden er en Consumable så vi ved om den skal stackes eller ej
         if (item instanceof Consumable) {
             Consumable c = (Consumable) item;
             int id = c.getItemId();
 
             if (consumableCatalog.containsKey(id)) {
+                //Her ligges værdigerne af stacken sammen
                 return String.join(",", "CONSUMABLE", String.valueOf(id), String.valueOf(c.getCurrentStackSize()));
 
             }
             return String.join
+                    //Her tjekker vi at stacken er full, hvis den er laves en ny stack
                     (",",
                             "CONSUMABLE_FULL",
                             escape(c.getName()),
@@ -102,6 +107,7 @@ public class ItemFactory {
                             escape(c.getEffect())
                     );
         } else if (item instanceof Weapon) {
+            //her bliver Weapon skrevet ind
             Weapon w = (Weapon) item;
             int id = w.getItemId();
 
@@ -119,6 +125,7 @@ public class ItemFactory {
                     w.getHandType().name()
             );
         } else if (item instanceof Armour) {
+            //her bliver Armour skrevet ind
             Armour a = (Armour) item;
             int id = a.getItemId();
             if (armourCatalog.containsKey(id)) {
