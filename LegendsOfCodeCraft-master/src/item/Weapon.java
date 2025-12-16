@@ -1,16 +1,15 @@
 package item;
 
 import Enums.HandType;
-import Enums.ItemType;
 
 public class Weapon extends Item{
-    private static final ItemType itemType = ItemType.weapon;
+    //private static final ItemType itemType = ItemType.weapon;
     private int damage;
     private HandType handType;
 
     //Konstruktør
     public Weapon(String name, double weight, double value, int durability, int itemId, int damage,  HandType handType) {
-        super(name, weight, value, durability, itemId, itemType);
+        super(name, weight, value, durability, itemId);
         this.damage = damage;
         this.handType = handType;
     }

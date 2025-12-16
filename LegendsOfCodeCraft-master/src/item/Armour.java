@@ -1,15 +1,14 @@
 package item;
-import Enums.ItemType;
+
 import Enums.SlotType;
 
 public class Armour extends Item{
-    private static final ItemType itemType = ItemType.armour;
     private int currentProtection;
     private SlotType slotType;
 
     //Konstruktør
     public Armour(String name, double weight, double value, int durability, int itemId, int currentProtection, SlotType slotType) {
-        super(name, weight, value, durability, itemId, itemType );
+        super(name, weight, value, durability, itemId);
         this.currentProtection = currentProtection;
         this.slotType =  slotType;
     }

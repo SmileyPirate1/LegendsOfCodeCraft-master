@@ -1,16 +1,13 @@
 package item;
 
-import Enums.ItemType;
-
 public class Consumable extends Item{
-    private static final ItemType itemType = ItemType.consumable;
     private int stackSize;
     private final int maxStackSize;
     private final String effect;
 
     //Konstruktør
     public Consumable(String name, double weight, double value, int durability, int itemId, int stackSize, int maxStackSize, String effect) {
-        super(name, weight, value, durability, itemId, itemType);
+        super(name, weight, value, durability, itemId);
         this.stackSize = stackSize;
         this.effect = effect;
         this.maxStackSize = maxStackSize;

@@ -1,5 +1,4 @@
 package item;
-import Enums.ItemType;
 
 //Item er abstract da vi ikke direkte opretter nogle instanser af item. Vi har istedet subklasser (consumable, weapon og armour)
 public abstract class Item {
@@ -8,16 +7,14 @@ public abstract class Item {
     private double value;
     private int durability;
     private int itemId;
-    private ItemType itemType;
 
     //Konstruktør
-    public Item(String name, double weight, double value, int durability, int itemId,  ItemType itemType) {
+    public Item(String name, double weight, double value, int durability, int itemId) {
         this.name = name;
         this.weight = weight;
         this.value = value;
         this.durability = durability;
         this.itemId = itemId;
-        this.itemType = itemType;
     }
 
     public String serialize (){
