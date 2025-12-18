@@ -67,9 +67,8 @@ public class ItemFactory {
         }
     }
 
-
+    //Her bliver data'en fra text filen uploaded til programmet
     public List<Item> parseFileToItems(String path) throws IOException {
-        //Her bliver data'en fra text filen uploaded til programmet
         List<Item> items = new ArrayList<>();
         try (BufferedReader r = new BufferedReader(new FileReader(path))) {
             String line;
@@ -82,6 +81,8 @@ public class ItemFactory {
         return items;
     }
 
+    //Serialize bruges til at genoprette objekterne med nogle bestemte værdier. Vi skal sikre os ved loading at objekterne har samme værdier som da vi sendte dem i tekstfilen
+    //Det gør vi ved at tjekke op på hvilke type objekt det er og derefter få deres værdier.
     public String serializeItem(Item item) {
         //Her tjekkes om genstanden er en Consumable så vi ved om den skal stackes eller ej
         if (item instanceof Consumable) {
@@ -89,12 +90,10 @@ public class ItemFactory {
             int id = c.getItemId();
 
             if (consumableCatalog.containsKey(id)) {
-                //Her ligges værdigerne af stacken sammen
                 return String.join(",", "CONSUMABLE", String.valueOf(id), String.valueOf(c.getCurrentStackSize()));
 
             }
             return String.join
-                    //Her tjekker vi at stacken er full, hvis den er laves en ny stack
                     (",",
                             "CONSUMABLE_FULL",
                             escape(c.getName()),
@@ -155,6 +154,7 @@ public class ItemFactory {
         }
     }
 
+    //Her sørger vi for at linjens mellem rum og andet unødvendigt fjernes. Vi tjekker samme tid om der er noget på linjen eller ej.
     public Item parseItemLine(String line) {
         if (line == null || line.isBlank()) {
             return null;
@@ -221,54 +221,58 @@ public class ItemFactory {
         }
     }
 
-        private Weapon copyWeapon (Weapon w){
-            if (w == null) return null;
-            return new Weapon(w.getName(), w.getWeight(), w.getValue(), w.getDurability(), w.getItemId(), w.getDamage(), w.getHandType());
-        }
-
-        private Armour copyArmour (Armour a){
-            if (a == null) return null;
-            return new Armour(a.getName(), a.getWeight(), a.getValue(), a.getDurability(), a.getItemId(), a.getCurrentProtection(), a.getSlotType());
-        }
-
-        private Consumable copyConsumable (Consumable c, Integer overrideStack){
-            if (c == null) return null;
-            int stack = (overrideStack != null) ? overrideStack : c.getCurrentStackSize();
-            return new Consumable(c.getName(), c.getWeight(), c.getValue(), c.getDurability(), c.getItemId(), stack, c.getMaxStackSize(), c.getEffect());
-        }
-
-        private static String[] splitCSV (String line){
-            List<String> tokens = new ArrayList<>();
-            StringBuilder sb = new StringBuilder();
-            boolean escape = false;
-            for (int i = 0; i < line.length(); i++) {
-                char c = line.charAt(i);
-                if (escape) {
-                    sb.append(c);
-                    escape = false;
-                } else if (c == '\\') {
-                    escape = true;
-                } else if (c == ',') {
-                    tokens.add(sb.toString());
-                    sb.setLength(0);
-                } else {
-                    sb.append(c);
-                }
-            }
-            tokens.add(sb.toString());
-            return tokens.toArray(new String[0]);
-        }
-
-        private static String escape (String s){
-            if (s == null) return "";
-            return s.replace("\\", "\\\\").replace(",", "\\,");
-        }
-
-        private static String unescape (String s){
-            if (s == null) return "";
-            return s.replace("\\,", ",").replace("\\\\", "\\");
-        }
+    //Kopi af weapon i for at få værdierne
+    private Weapon copyWeapon(Weapon w) {
+        if (w == null) return null;
+        return new Weapon(w.getName(), w.getWeight(), w.getValue(), w.getDurability(), w.getItemId(), w.getDamage(), w.getHandType());
     }
+
+    //Kopi armour for at få værdierne
+    private Armour copyArmour(Armour a) {
+        if (a == null) return null;
+        return new Armour(a.getName(), a.getWeight(), a.getValue(), a.getDurability(), a.getItemId(), a.getCurrentProtection(), a.getSlotType());
+    }
+
+    //Kopi af consumable for at få værdierne.
+    private Consumable copyConsumable(Consumable c, Integer overrideStack) {
+        if (c == null) return null;
+        int stack = (overrideStack != null) ? overrideStack : c.getCurrentStackSize();
+        return new Consumable(c.getName(), c.getWeight(), c.getValue(), c.getDurability(), c.getItemId(), stack, c.getMaxStackSize(), c.getEffect());
+    }
+
+    //Her splitter vi linjerne op.
+    private static String[] splitCSV(String line) {
+        List<String> tokens = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        boolean escape = false;
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (escape) {
+                sb.append(c);
+                escape = false;
+            } else if (c == '\\') {
+                escape = true;
+            } else if (c == ',') {
+                tokens.add(sb.toString());
+                sb.setLength(0);
+            } else {
+                sb.append(c);
+            }
+        }
+        tokens.add(sb.toString());
+        return tokens.toArray(new String[0]);
+    }
+
+    private static String escape(String s) {
+        if (s == null) return "";
+        return s.replace("\\", "\\\\").replace(",", "\\,");
+    }
+
+    private static String unescape(String s) {
+        if (s == null) return "";
+        return s.replace("\\,", ",").replace("\\\\", "\\");
+    }
+}
 
 
 

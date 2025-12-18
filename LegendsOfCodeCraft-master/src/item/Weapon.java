@@ -2,13 +2,13 @@ package item;
 
 import Enums.HandType;
 
-public class Weapon extends Item{
+public class Weapon extends Item {
     //private static final ItemType itemType = ItemType.weapon;
     private int damage;
     private HandType handType;
 
     //Konstruktør
-    public Weapon(String name, double weight, double value, int durability, int itemId, int damage,  HandType handType) {
+    public Weapon(String name, double weight, double value, int durability, int itemId, int damage, HandType handType) {
         super(name, weight, value, durability, itemId);
         this.damage = damage;
         this.handType = handType;
@@ -20,15 +20,17 @@ public class Weapon extends Item{
         return "Weapon: " + getName() + " Damage: " + damage + " Vægt: " + getWeight() + " Handtype: " + handType;
     }
 
+    //Her er beskeden brugeren får når et våben bliver brugt
     @Override
-    public String useItem(){
+    public String useItem() {
         return "Du slår med dit våben";
     }
 
-    public HandType getHandType(){
+    public HandType getHandType() {
         return handType;
     }
-    public int getDamage(){
+
+    public int getDamage() {
         return damage;
     }
 }

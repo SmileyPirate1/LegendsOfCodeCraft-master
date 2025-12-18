@@ -2,7 +2,7 @@ package item;
 
 import Enums.SlotType;
 
-public class Armour extends Item{
+public class Armour extends Item {
     private int currentProtection;
     private SlotType slotType;
 
@@ -10,7 +10,7 @@ public class Armour extends Item{
     public Armour(String name, double weight, double value, int durability, int itemId, int currentProtection, SlotType slotType) {
         super(name, weight, value, durability, itemId);
         this.currentProtection = currentProtection;
-        this.slotType =  slotType;
+        this.slotType = slotType;
     }
 
     @Override
@@ -19,14 +19,17 @@ public class Armour extends Item{
         return "Armour: " + getName() + " Protection: " + currentProtection + " Vægt: " + getWeight() + " SlotType: " + slotType;
     }
 
+    //Her er beskeden der bliver givet når brugeren bruger en rustning
     @Override
-    public String useItem(){
+    public String useItem() {
         return "Du tager dit udstyr på";
     }
-    public SlotType getSlotType(){
+
+    public SlotType getSlotType() {
         return slotType;
     }
-    public int getCurrentProtection(){
+
+    public int getCurrentProtection() {
         return currentProtection;
     }
 }

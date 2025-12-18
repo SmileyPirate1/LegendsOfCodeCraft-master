@@ -33,9 +33,11 @@ public class Character {
     public void addItem(Item item) throws OverweightException {
         inventory.addItem(item);
     }
+
     public void saveItems(String path, item.ItemFactory factory) throws IOException {
         factory.writeItemsToFile(path, inventory.getItems());
     }
+
     public void loadItems(String path, item.ItemFactory factory) throws IOException {
         List<Item> loaded = factory.parseFileToItems(path);
         inventory.replaceAllItems(loaded);
@@ -48,7 +50,6 @@ public class Character {
     public String showInventory() {
         return inventory.showInventory();
     }
-
 
     public double getCurrentWeight() {
         return inventory.getCurrentWeight();

@@ -17,40 +17,36 @@ public abstract class Item {
         this.itemId = itemId;
     }
 
-    public String serialize (){
-        String type = this.getClass().getSimpleName();
-        return String.join(",",
-                "ITEM",
-                type,
-                escape(name),
-                String.valueOf(weight),
-                String.valueOf(value),
-                String.valueOf(durability),
-                String.valueOf(itemId));
-    }
-    protected static String escape(String s){
+    //Bruges til at sikre , og \
+    protected static String escape(String s) {
         if (s == null) return "";
         return s.replace("\\", "\\\\").replace(",", "\\,");
     }
-    protected static String unescape(String s){
+
+    //Bruges i tilfælde af at vi skal Konvetere tilbage
+    protected static String unescape(String s) {
         if (s == null) return "";
         return s.replace("\\", "\\\\").replace(",", "\\,");
     }
 
     //getter til ar vi kan kalde værdierne i itemet
-    public String getName(){
+    public String getName() {
         return name;
     }
-    public double getWeight(){
+
+    public double getWeight() {
         return weight;
     }
-    public double getValue(){
+
+    public double getValue() {
         return value;
     }
-    public int getDurability(){
+
+    public int getDurability() {
         return durability;
     }
-    public int  getItemId(){
+
+    public int getItemId() {
         return itemId;
     }
 

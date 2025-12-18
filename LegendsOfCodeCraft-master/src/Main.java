@@ -67,9 +67,9 @@ public class Main {
 
                             //Her bliver genstanden tilføjet til karakterens inventar
                             torben.addItem(newItem);
-                                System.out.println("Tilføjet: " + newItem);
+                            System.out.println("Tilføjet: " + newItem);
 
-                                //Vi griber overweight exception fra inventory som er boblet igennem programmet.
+                            //Vi griber overweight exception fra inventory som er boblet igennem programmet.
                         } catch (InventoryFullException | OverweightException e) {
                             System.out.println(e.getMessage());
                         } catch (Exception e) {
@@ -94,7 +94,7 @@ public class Main {
                                 //her bliver genstanden fjernet fra inventaret ud fra pladsen brugeren har valgt
                                 //-1 bliver skrevet for at vælge den plads i arraet som brugeren gern vil vælger på grund af et array starter fra 0 men brugeren vælger fra 1
                                 torben.removeItem(removedItem - 1);
-                                System.out.println(torben.getCurrentWeight());
+                                System.out.println("Total vægt: " + torben.getCurrentWeight());
                             } catch (InputMismatchException e) {
                                 System.out.println("Du skal indtaste et gyldigt tal");
                                 input.nextLine();
@@ -164,7 +164,7 @@ public class Main {
                         }
                         break;
 
-                        //Vis inventar use case "5"
+                    //Vis inventar use case "5"
                     case "5":
                         //Vi viser inventaret fra karakteren som det står i listen på nuværende tidspunkt
                         //try/catchen er her for at sikre at inventaret kan vises
@@ -181,7 +181,7 @@ public class Main {
                         if (torben.getInventory().isEmpty()) {
                             System.out.println("Du har ikke noget i din inventar");
                         } else {
-                            //her bliver inventaret fremvist til brugeren så man kan vælge derfra hvilken genstand skal ruges
+                            //Her bliver inventaret fremvist til brugeren så man kan vælge derfra hvilken genstand skal ruges
                             System.out.println(torben.showInventory());
                             System.out.println("vælg den genstand du gerne vil sælge");
                             //try/catch bruges til at tjekke et gyldigt input
@@ -240,6 +240,7 @@ public class Main {
                         }
                         break;
 
+                    //Gemmer data use case "8"
                     case "8":
                         System.out.println("Angiv filsti til gemning (fx. items.txt)");
                         String savePath = input.nextLine();
@@ -248,18 +249,22 @@ public class Main {
                             System.out.println("Din data er gemt");
                         } catch (java.io.IOException e) {
                             System.out.println("Kunne ikke gemme filen");
-                        } break;
+                        }
+                        break;
 
+                    //Indlæser gemt data use case "9"
                     case "9":
                         System.out.println("Angiv filsti til indlæsning (fx. items.txt)");
                         String loadPath = input.nextLine();
-                        try { torben.loadItems(loadPath, itemFactory);
+                        try {
+                            torben.loadItems(loadPath, itemFactory);
                             System.out.println("Data indlæst");
                         } catch (java.io.IOException e) {
                             System.out.println("Kunne ikke indlæse filen");
-                        } catch (IllegalArgumentException e){
+                        } catch (IllegalArgumentException e) {
                             System.out.println("Filens indhold er ugyldigt");
-                        } break;
+                        }
+                        break;
 
                     case "10":
                         //her slutter while løkken og programmet bliver lukket

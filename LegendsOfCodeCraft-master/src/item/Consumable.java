@@ -1,6 +1,6 @@
 package item;
 
-public class Consumable extends Item{
+public class Consumable extends Item {
     private int stackSize;
     private final int maxStackSize;
     private final String effect;
@@ -14,22 +14,25 @@ public class Consumable extends Item{
     }
 
     //addToStack har et parameter amount som har værdien af toPlace fra inventory.
-    public int addToStack(int amount){
+    public int addToStack(int amount) {
         int canAdd = amount;
-        if (stackSize + amount > maxStackSize){
+        if (stackSize + amount > maxStackSize) {
             canAdd = maxStackSize - stackSize;
         }
         stackSize += canAdd;
         return canAdd;
     }
+
     //Vi tjekker om item er stackable
-    public boolean canStackWith(Consumable other){
+    public boolean canStackWith(Consumable other) {
         if (other == null) return false;
         return this.getName().equalsIgnoreCase(other.getName())
                 && this.maxStackSize == other.getMaxStackSize();
     }
-    public String consumeOne(){
-        if (stackSize <= 0){
+
+    //Det her bliver kaldt når en Consumable bliver brugt, hvis der ikke er noget i den gældene stack får brugeren at vide der ikke er flere, ellers trækker den en fra stacken
+    public String consumeOne() {
+        if (stackSize <= 0) {
             return "Ingen tilbage af " + getName() + ".";
         }
         stackSize--;
@@ -37,26 +40,11 @@ public class Consumable extends Item{
     }
 
     @Override
-    public String serialize(){
-        return String.join(",",
-                "CONSUMABLE",
-                escape(getName()),
-                String.valueOf(getWeight()),
-                String.valueOf(getValue()),
-                String.valueOf(getDurability()),
-                String.valueOf(getItemId()),
-                String.valueOf(getCurrentStackSize()),
-                String.valueOf(maxStackSize),
-                escape (effect));
-    }
-
-
-    @Override
-    public String useItem(){
+    public String useItem() {
         return consumeOne();
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return stackSize <= 0;
     }
 
@@ -71,10 +59,6 @@ public class Consumable extends Item{
 
     public int getMaxStackSize() {
         return maxStackSize;
-    }
-
-    public int spaceLeft(){
-        return maxStackSize - stackSize;
     }
 
     public String getEffect() {
